@@ -20,14 +20,15 @@ class BlockListener : Listener {
         if (event.entityType == null) return
         val type: EntityType = event.entityType
         val explosion = Startup.configuration?.store?.explosions?.custom?.get(type)
-        if (Startup.configuration?.store?.explosions?.custom?.containsKey(type)!! && !explosion?.enabled!!) return
-        Startup.log("Started explosion of type ${type.name}")
+        if (explosion != null && !explosion.enabled) return
+        if (explosion != null && explosion.disabledWorlds?.contains(event.location.world.name)!!) return
         var radius: Double = Startup.configuration?.store?.explosions?.radius!!
         if (explosion != null)
             radius *= explosion.radius
-        var multiplier: Double = 1.0
+        var multiplier: Double = Startup.configuration?.store?.explosions?.damage!!
         if (explosion != null)
             multiplier *= explosion.damage
+        Startup.log("Started explosion of type ${type.name} with a $radius radius and $multiplier damage")
         val blocks: List<Block> = explosionObserver(event.location, event.yield, ArrayList(event.blockList()), radius, multiplier, type)
         event.blockList().clear()
         for (block: Block in blocks) event.blockList().add(block)
@@ -57,7 +58,7 @@ class BlockListener : Listener {
                     if (source.distance(loc) <= radius) {
                         val block = loc.block
                         val conf = Startup.configuration?.store?.blocks?.get(block.type)
-                        if (conf != null && !conf.except.contains(explosion)) { // Get distance and damage
+                        if (conf != null && !conf.except?.contains(explosion)!!) { // Get distance and damage
                             val distance = loc.distance(source)
                             var damage = 1.0
                             // Yield

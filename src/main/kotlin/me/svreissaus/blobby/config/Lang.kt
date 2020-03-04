@@ -6,6 +6,9 @@ class Lang {
     @Expose
     var commands: LangCommands = LangCommands()
 
+    @Expose
+    var check: String = "&9Block has &c%health%&f/&e%block_health%&ahp"
+
     class LangCommands {
         @Expose
         var permission: String = "&7You don't have permission to execute this command."
@@ -20,7 +23,7 @@ class Lang {
             var listEmpty: String = "&7There are no block currently configured."
 
             @Expose
-            var listEach: String = "&e%material%: &c%health%&aHP"
+            var listEach: String = "&e%material%: &c%health%&ahp"
         }
     }
 }

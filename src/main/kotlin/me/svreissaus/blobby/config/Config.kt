@@ -17,6 +17,9 @@ class Config {
     @Expose
     var blocks: HashMap<Material, ConfigBlock> = HashMap()
 
+    @Expose
+    var check: ConfigCheck = ConfigCheck()
+
     class ConfigBlock {
         // Health the block should have
         @Expose
@@ -24,7 +27,12 @@ class Config {
 
         // Blacklist of explosions that do not harm this block
         @Expose
-        var except: ArrayList<EntityType> = ArrayList<EntityType>()
+        var except: ArrayList<EntityType>? = ArrayList<EntityType>()
+    }
+
+    class ConfigCheck {
+        @Expose
+        var material: Material = Material.POTATO_ITEM
     }
 
     class ConfigExplosion {
@@ -53,6 +61,10 @@ class Config {
             // Should we enable it?
             @Expose
             var enabled: Boolean = true
+
+            // Do no harm on this worlds
+            @Expose
+            var disabledWorlds: ArrayList<String>? = ArrayList()
         }
     }
     init {
@@ -61,7 +73,7 @@ class Config {
         explosions.custom[EntityType.WITHER_SKULL] = ConfigExplosion.ConfigCustomExplosion()
 
         blocks[Material.OBSIDIAN] = ConfigBlock()
-        blocks[Material.OBSIDIAN]!!.except.add(EntityType.CREEPER)
+        blocks[Material.OBSIDIAN]!!.except?.add(EntityType.CREEPER)
         blocks[Material.GLASS] = ConfigBlock()
         blocks[Material.IRON_BLOCK] = ConfigBlock()
     }
