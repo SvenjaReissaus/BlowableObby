@@ -28,7 +28,6 @@ class BlockListener : Listener {
         var multiplier: Double = Startup.configuration?.store?.explosions?.damage!!
         if (explosion != null)
             multiplier *= explosion.damage
-        Startup.log("Started explosion of type ${type.name} with a $radius radius and $multiplier damage")
         val blocks: List<Block> = explosionObserver(event.location, event.yield, ArrayList(event.blockList()), radius, multiplier, type)
         event.blockList().clear()
         for (block: Block in blocks) event.blockList().add(block)

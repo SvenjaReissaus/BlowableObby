@@ -1,10 +1,12 @@
 package me.svreissaus.blobby.listeners
 
 import me.svreissaus.blobby.Startup
+import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import kotlin.math.ceil
 
 class PlayerListener : Listener {
     @EventHandler
@@ -16,7 +18,11 @@ class PlayerListener : Listener {
         val id: String = "${event.clickedBlock.location.world.name}-${event.clickedBlock.location.x}-${event.clickedBlock.location.y}-${event.clickedBlock.location.z}"
         val health = Startup.configuration?.store?.blocks!![event.clickedBlock.type]?.health
         if (Startup.data.containsKey(id) && Startup.data[id] != null)
-            event.player.sendMessage(Startup.lang?.store?.check?.replace("%health%", "${Startup.data[id]}")?.replace("%block_health%", "$health"))
-        else event.player.sendMessage(Startup.lang?.store?.check?.replace("%health%", "$health")?.replace("%block_health%", "$health"))
+            event.player.sendMessage(
+                    ChatColor.translateAlternateColorCodes('&', Startup.lang?.store?.check?.replace("%health%", "${ceil(Startup.data[id]!!).toInt()}")?.replace("%block_health%", "$health"))
+            )
+        else event.player.sendMessage(
+                ChatColor.translateAlternateColorCodes('&', Startup.lang?.store?.check?.replace("%health%", "$health")?.replace("%block_health%", "$health"))
+        )
     }
 }
