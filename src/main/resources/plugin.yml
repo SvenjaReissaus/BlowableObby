@@ -1,0 +1,10 @@
+name: BlowableObby
+description: Blowable Blocks
+author: SvenjaReissaus
+version: 0.1
+load: POSTWORLD
+main: me.svreissaus.blobby.Startup
+commands:
+  blow:
+    description: Blowable obsidian base command
+    aliases: [bl, blowable, blobby]
